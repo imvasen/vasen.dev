@@ -1,6 +1,5 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import axios from 'axios';
-import { directusUrl } from '@web/utils/config';
+import { cacheTTL, directusUrl } from '@web/utils/config';
 
 export default async function handler(
   req: NextApiRequest,
@@ -10,9 +9,10 @@ export default async function handler(
     res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const posts = await axios.get(
-    `${directusUrl}/items/posts?fields=id,title,slug`,
-  );
+  const posts = await fetch(
+    `${directusUrl}/items/posts?fields=id,title,slug,tags,date_created,date_updated`,
+    { next: { revalidate: cacheTTL, tags: ['directus/index'] } },
+  ).then((res) => res.json());
 
-  return res.status(200).json(posts.data);
+  return res.status(200).json(posts);
 }
