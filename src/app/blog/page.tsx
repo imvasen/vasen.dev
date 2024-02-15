@@ -1,4 +1,5 @@
-import RevalidateButtons from '@web/components/RevalidateButtons';
+import Link from 'next/link';
+
 import { getPosts } from '@web/utils/posts';
 
 export default async function Blog() {
@@ -6,15 +7,30 @@ export default async function Blog() {
 
   return (
     <main className='p-2 flex flex-col gap-2'>
-      <RevalidateButtons />
-      <section className='grid grid-cols-3'>
-        {posts.data.map((post) => (
-          <div
-            className='border p-4 rounded hover:border-blue-500 hover:shadow-lg transition-all cursor-pointer'
-            key={post.id}
-          >
-            {post.title}
-          </div>
+      <section className='flex flex-col gap-2'>
+        {posts.map((post) => (
+          <Link key={post.id} href={`/blog/${post.slug}`}>
+            <div className='flex flex-col p-4 rounded text-green-400 hover:shadow-lg transition-all cursor-pointer hover:text-green-500'>
+              <h2 className='text-xl font-bold mb-2'>{post.title}</h2>
+
+              <p className='mb-1 text-sm'>
+                {new Date(
+                  post.date_updated || post.date_created,
+                ).toLocaleDateString()}
+              </p>
+
+              <section className='flex gap-1'>
+                {post.tags.map((tag) => (
+                  <span
+                    className='border rounded border-green-500 text-sm px-1'
+                    key={tag}
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </section>
+            </div>
+          </Link>
         ))}
       </section>
     </main>

@@ -1,5 +1,6 @@
-import RevalidateButtons from '@web/components/RevalidateButtons';
 import Image from 'next/image';
+
+import RevalidateButtons from '@web/components/RevalidateButtons';
 
 export default async function Home() {
   return (
