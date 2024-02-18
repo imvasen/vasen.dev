@@ -25,6 +25,16 @@ ul {
   @apply list-disc;
 }
 
+code:not(pre code) {
+  @apply bg-neutral-600;
+  @apply px-1.5 py-0.5 rounded text-sm;
+}
+
+article a {
+  @apply text-indigo-300;
+  @apply hover:underline;
+}
+
 ol {
   @apply list-decimal list-inside;
   @apply ml-4;

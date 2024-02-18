@@ -1,11 +1,11 @@
-import {
-  revalidateDirectusIndex,
-  revalidateDirectusPosts,
-} from '@web/app/actions';
+import { revalidateTag } from 'next/cache';
 
-export async function PATCH() {
-  await revalidateDirectusIndex();
-  await revalidateDirectusPosts();
+export async function PATCH(req: Request) {
+  const { tags } = await req.json();
 
-  return Response.json({});
+  for (const tag of tags) {
+    revalidateTag(tag);
+  }
+
+  return Response.json({ tags });
 }

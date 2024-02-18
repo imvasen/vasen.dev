@@ -30,7 +30,7 @@ type QueryParams = {
     | '-title'
   >;
   slug?: string;
-  tags?: Array<'directus/index' | 'directus/posts'>;
+  tags?: string[];
 };
 
 /**
@@ -114,7 +114,7 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
     ],
     slug,
     limit: 1,
-    tags: ['directus/posts'],
+    tags: ['directus/posts', `directus/posts/${slug}`],
   });
 
   if (data.length === 0) {
