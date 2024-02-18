@@ -1,13 +1,18 @@
+import { Author, getAuthors } from '@web/utils/authors';
 import { cacheTTL, directusUrl } from '@web/utils/config';
 
-type Post = {
+export type Post = {
   id: number;
   title: string;
   slug: string;
   tags: string[];
   date_created: string;
   date_updated: string;
+  user_created: string;
+  thumbnail: string;
+  cover_image: string;
   content: string;
+  author: Author;
 };
 
 type QueryParams = {
@@ -39,7 +44,15 @@ type QueryParams = {
  * @returns The posts from the API.
  */
 export async function getPosts<T = Omit<Post, 'content'>>({
-  fields = ['slug', 'title', 'tags', 'date_created', 'date_updated'],
+  fields = [
+    'slug',
+    'title',
+    'tags',
+    'date_created',
+    'date_updated',
+    'user_created',
+    'cover_image',
+  ],
   limit,
   slug,
   sort = ['-date_updated', '-date_created'],
@@ -64,6 +77,25 @@ export async function getPosts<T = Omit<Post, 'content'>>({
   });
 
   const json = await res.json();
+
+  const authorIds = [
+    ...new Set<string>(json.data.map((post: Post) => post.user_created)),
+  ];
+  const authors = await getAuthors({ ids: authorIds });
+  const authorsMap = new Map<string, Author>(
+    authors.map((author) => [author.id, author]),
+  );
+
+  for (const post of json.data) {
+    post.author = authorsMap.get(post.user_created);
+    post.thumbnail = post.thumbnail
+      ? `/directus-assets/${post.thumbnail}`
+      : post.thumbnail;
+    post.cover_image = post.cover_image
+      ? `/directus-assets/${post.cover_image}`
+      : post.cover_image;
+  }
+
   return json.data;
 }
 
@@ -76,6 +108,8 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       'tags',
       'date_created',
       'date_updated',
+      'user_created',
+      'cover_image',
       'content',
     ],
     slug,
