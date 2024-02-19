@@ -5,6 +5,7 @@ export type Post = {
   id: number;
   title: string;
   slug: string;
+  description: string;
   tags: string[];
   date_created: string;
   date_updated: string;
@@ -48,6 +49,7 @@ export async function getPosts<T = Omit<Post, 'content'>>({
     'slug',
     'title',
     'tags',
+    'description',
     'date_created',
     'date_updated',
     'user_created',
@@ -105,11 +107,13 @@ export async function getPostBySlug(slug: string): Promise<Post | null> {
       'id',
       'title',
       'slug',
+      'description',
       'tags',
       'date_created',
       'date_updated',
       'user_created',
       'cover_image',
+      'thumbnail',
       'content',
     ],
     slug,
