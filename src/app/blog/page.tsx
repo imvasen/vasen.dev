@@ -1,8 +1,14 @@
 import Link from 'next/link';
 
 import { getPosts } from '@web/utils/posts';
+import { track } from '@web/utils/track';
 
 export default async function Blog() {
+  await track('Page Viewed', {
+    page: 'Blog (home)',
+    subject: 'Blog',
+  });
+
   const posts = await getPosts();
 
   return (

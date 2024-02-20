@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 
 import BlogPost from '@web/components/blog/BlogPost';
 import { getPostBySlug } from '@web/utils/posts';
+import { track } from '@web/utils/track';
 
 interface Props {
   params: {
@@ -56,6 +57,13 @@ export default async function BlogPostPage({ params: { slug } }: Props) {
   if (!post) {
     return notFound();
   }
+
+  await track('Page Viewed', {
+    page: 'Blog Post',
+    subject: 'Blog',
+    title: post.title,
+    slug: post.slug,
+  });
 
   return (
     <main className='p-0 md:p-2 flex flex-col gap-2 items-center'>

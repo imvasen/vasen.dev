@@ -87,7 +87,7 @@ export default async function BlogPost({ post }: Props) {
           </section>
           <h1 className='text-4xl font-bold'>{post.title}</h1>
           {post.tags.length && (
-            <section className='space-x-2 text-sm mt-2'>
+            <section className='text-sm mt-2 flex gap-x-2 flex-wrap'>
               {post.tags.map((tag, i) => (
                 <span
                   key={`tag:${i}`}
