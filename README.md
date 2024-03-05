@@ -1,4 +1,12 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+# vasen.dev
+
+This repository powers my [page](https://vasen.dev). I open-sourced it so that
+anyone can help me learn, and anyone can learn from this. It may work for you to
+use it as a template, or you may want to use code as a starting point for a cool
+project that you may have.
+
+This is a [Next.js](https://nextjs.org/) project bootstrapped with
+[`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 

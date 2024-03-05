@@ -1,5 +1,6 @@
 export const directusUrl = process.env.DIRECTUS_URL || '';
 export const mixpanelToken = process.env.MIXPANEL_TOKEN || '';
+export const siteUrl = process.env.SITE_URL || '';
 
 const defaultTTL = 60 * 60 * 24; // 24 hours
 

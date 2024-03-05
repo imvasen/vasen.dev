@@ -80,13 +80,15 @@ export async function getPosts<T = Omit<Post, 'content'>>({
 
   const json = await res.json();
 
-  const authorIds = [
-    ...new Set<string>(json.data.map((post: Post) => post.user_created)),
-  ];
-  const authors = await getAuthors({ ids: authorIds });
-  const authorsMap = new Map<string, Author>(
-    authors.map((author) => [author.id, author]),
-  );
+  const authorsMap = new Map<string, Author>();
+
+  if (fields.includes('user_created') && json.data.length > 0) {
+    const authorIds = [
+      ...new Set<string>(json.data.map((post: Post) => post.user_created)),
+    ];
+    const authors = await getAuthors({ ids: authorIds });
+    authors.forEach((author) => authorsMap.set(author.id, author));
+  }
 
   for (const post of json.data) {
     post.author = authorsMap.get(post.user_created);
